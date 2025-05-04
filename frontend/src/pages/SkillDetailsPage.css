@@ -1,0 +1,49 @@
+/* src/pages/SkillDetailsPage.css */
+.skill-details-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  .skill-details-page h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  
+  .skill-detail h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  
+  .skill-detail p {
+    font-size: 18px;
+    color: #fff;
+    margin: 10px 0;
+  }
+  
+  .skill-detail .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
+    padding: 12px 24px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+  
+  .skill-detail .btn:hover {
+    background: linear-gradient(135deg, #0083b0, #00b4db);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+  

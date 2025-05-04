@@ -1,21 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/HomePage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
+import HomePage from './pages/HomePage';  // Fixed to match file name
+import SkillDetailsPage from './pages/SkillDetailsPage';
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        {/* Define all routes here */}
+        <Route path="/" element={<HomePage />} />         {/* HomePage route */}
+        <Route path="/register" element={<RegisterPage />} /> 
+        
+ 
+        <Route path="/login" element={<LoginPage />} />         {/* Login page route */}
+        <Route path="/profile" element={<ProfilePage />} />    {/* Profile page route */}
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;

@@ -1,53 +1,63 @@
 import React, { useState } from 'react';
-import api from '../utils/api';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import LoginForm from '../components/loginform';
+  // Import LoginForm component if needed for structure
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
+
+    // Check if email and password are provided
+    if (!email || !password) {
+      setError('Please enter both email and password');
+      return;
+    }
+
     try {
-      const response = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token); // Store JWT token
-      navigate('/'); // Redirect to HomePage after login
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password,
+      });
+
+      console.log('Login successful:', response.data);
+      localStorage.setItem('token', response.data.token);
+      window.location.href = '/home';  // Redirect after successful login
     } catch (error) {
-      console.error('Error logging in:', error);
-      alert('Invalid credentials');
+      console.error('Error during login:', error);
+      setError(error.response ? error.response.data.msg : 'An error occurred');
     }
   };
 
   return (
-    <center>
-      <div>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-            />
-          </div>
-          <div>
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-            />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    </center>
+    <div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Display error if any */}
+
+      <form onSubmit={loginUser}>
+        <div>
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 

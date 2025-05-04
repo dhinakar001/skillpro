@@ -3,13 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('token');
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear token
-    navigate('/login');               // Redirect to login
+    localStorage.removeItem('token');
+    navigate('/login'); // Navigate to login page after logout
   };
-
-  const isLoggedIn = !!localStorage.getItem('token'); // Check if token exists
 
   return (
     <nav style={{ padding: '10px', backgroundColor: '#eee' }}>
@@ -21,7 +20,17 @@ const Navbar = () => {
         </>
       ) : (
         <>
-          <button onClick={handleLogout} style={{ marginLeft: '10px' }}>
+          <Link to="/profile" style={{ marginRight: '10px' }}>Profile</Link>
+          <button 
+            onClick={handleLogout} 
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              color: 'blue', 
+              cursor: 'pointer', 
+              textDecoration: 'underline' 
+            }}
+          >
             Logout
           </button>
         </>

@@ -1,27 +1,39 @@
-// server.js
+// Import required dependencies
 const express = require('express');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const connectDB = require('./config/db');  // Import the DB connection
+const authRoutes = require('./routes/authRoutes');
+const skillsRoutes = require('./routes/skillRoutes');  // Correct path
 
-dotenv.config();  // Load environment variables
+// Load environment variables from .env
+dotenv.config();
 
 // Initialize Express app
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors()); // Allow Cross-Origin Resource Sharing
+app.use(bodyParser.json()); // Parse JSON bodies
 
-// Routes
-app.use('/api/auth', require('./routes/authRoutes'));  // Auth routes (login, register)
-app.use('/api/posts', require('./routes/postRoutes')); // Post routes (create post etc.)
+// API routes
+app.use('/api/auth', authRoutes); // Authentication routes (login/register)
 
-// Connect to DB and start server
-connectDB();
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch((err) => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+    process.exit(1);
+  });
+
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
