@@ -1,41 +1,41 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import axios from 'axios';
+import './AuthPage.css'; // Shared styles for both Login and Register pages
 
-function RegisterPage() {
+const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [success, setSuccess] = useState('');
 
-  const handleSubmit = async (e) => {
+  const registerUser = async (e) => {
     e.preventDefault();
 
-    const userData = {
-      username,
-      email,
-      password,
-    };
-
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
-      console.log('Registration successful', response.data);
-      // Redirect to the login page after successful registration
-      navigate('/login');
-    } catch (err) {
-      setError('Registration failed. Please try again.');
-      console.error(err);
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
+        username,
+        email,
+        password,
+      });
+
+      setSuccess('Registration successful! You can now log in.');
+      setError('');
+    } catch (error) {
+      console.error('Error during registration:', error);
+      setError(error.response?.data?.message || 'An error occurred');
+      setSuccess('');
     }
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
+    <div className="auth-container">
+      <h1>Register</h1>
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
+      <form onSubmit={registerUser}>
+        <div className="form-group">
+          <label>Username</label>
           <input
             type="text"
             value={username}
@@ -43,8 +43,8 @@ function RegisterPage() {
             required
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className="form-group">
+          <label>Email</label>
           <input
             type="email"
             value={email}
@@ -52,8 +52,8 @@ function RegisterPage() {
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
             value={password}
@@ -61,10 +61,12 @@ function RegisterPage() {
             required
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="auth-button">
+          Register
+        </button>
       </form>
     </div>
   );
-}
+};
 
 export default RegisterPage;
